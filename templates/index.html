@@ -1,0 +1,17 @@
+priv
+
+{% for new in news %}
+
+	<h3><a href=" {{new.get_absolute_url}}"> {{new.title}}</a></h3>
+	{{new.category}}</br>
+		{% for tag in new.tags.all %}
+			{{tag}}
+		{% endfor %}	
+	{{new.text_min|safe}}
+	<h4>{{new.date_created}}</h4>
+	{{new.description}}</br>
+	{{new.like}}</br>
+	<img src="{{new.image.url}}">
+
+
+{% endfor %}
