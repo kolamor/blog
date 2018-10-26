@@ -82,6 +82,32 @@ class News(models.Model):
 		return reverse('news_view', kwargs={'slug' : self.slug})
 
 
+class Comments(models.Model):
+	""" Коментарии"""
+	user = models.ForeignKey(User,
+							verbose_name='Пользователь',
+							on_delete=models.CASCADE)
+
+	news = models.ForeignKey(News,
+							verbose_name='Новость',
+							on_delete=models.CASCADE)
+	text = models.TextField('Комментарий')
+	date_create = models.DateTimeField('Дата создания',
+							auto_now_add=True, null=True)
+	moderation = models.BooleanField('модерация', default=False)
+
+
+	class Meta:
+		verbose_name = 'Комментарий'
+		verbose_name_plural = 'Комментарии'
+
+
+	def __str__(self):
+		return '{}'.format(self.user)
+
+	
+
+
 
 
 

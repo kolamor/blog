@@ -1,1 +1,38 @@
+{% extends "index.html" %}
 news
+
+{% block content %}
+
+	<h3>{{news_full.title}}</h3>
+	<h5>{{news_full.user}}</h5>
+	<h5>{{news_full.category}}</h5>
+	{{news_full.description}}</br>
+	{%for tag in news_full.tags.all %}
+		{{tag}}
+	{% endfor %}
+	<p>{{news_full.text|safe}}</p>
+	<h5>{{news_full.date_created}}</h5>
+	
+	рейтинг {{news_full.like}}
+
+	<img src="{{news_full.image.url}}">
+
+	<hr>
+	{% for comment in comments %}
+		Пользователь: {{comment.user}}</br>
+		Дата: {{comment.date_create}}</br>
+		{{comment.text|safe}}
+	{% endfor %}
+	
+
+	{% if user.is_active %}
+	<form action="" method="POST">
+		{% csrf_token %}
+		{{form.as_p }}
+		<button type="submit">отправить</button>
+	</form>
+	{% else %}
+		<h4>Коментировать могут только зарегистрированный пользоватили</h4>
+	{% endif %}
+
+{% endblock content %}
