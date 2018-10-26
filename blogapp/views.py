@@ -3,14 +3,14 @@ from django.views.generic import View
 from blogapp.models import News, Category, Tag, Comments
 from blogapp.forms import CommentsForm
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 # Create your views here.
 
 
 def news_paginator(paginator, page_number):
 	
-	# paginator = Paginator(products,4)		
-	# page_number = request.GET.get('page', 1)
+	
 	page = paginator.get_page(page_number)
 
 	is_paginator = page.has_other_pages()
@@ -30,7 +30,14 @@ def news_paginator(paginator, page_number):
 class IndexPage(View):
 	""" Index Html"""
 	def get(self, request):
-		news_list = News.objects.all()
+		search_query = request.GET.get('search', '')
+
+		if search_query:
+			news_list = News.objects.filter(Q(title__icontains=search_query) |
+											Q(text__icontains=search_query))
+		else:
+			news_list = News.objects.all()
+		
 		paginator = Paginator(news_list,2)
 		page_number = request.GET.get('page', 1)
 		page, prev_url, next_url = news_paginator(paginator, page_number)
