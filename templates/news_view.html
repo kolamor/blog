@@ -15,15 +15,62 @@ news
 	
 	рейтинг {{news_full.like}}
 
-	<img src="{{news_full.image.url}}">
+	{% if news_full.image != '' %}
+		<img src="{{news_full.image.url}}">
+	{% endif %}
 
 	<hr>
-	{% for comment in comments %}
+	{% for comment in page_object %}
 		Пользователь: {{comment.user}}</br>
 		Дата: {{comment.date_create}}</br>
 		{{comment.text|safe}}
 	{% endfor %}
 	
+
+
+<div class="container my-2"> 
+		<div class="row ">
+			<div class="col-auto">
+
+
+			<nav aria-label="...">
+			  <ul class="pagination">
+			    <li class="page-item {% if not prev_url %} disabled {% endif %}">
+			      <a class="page-link" href="{{ prev_url }}" tabindex="-1"><</a>
+			    </li>
+
+		    
+		   
+			    
+
+			    {% for n in page_object.paginator.page_range %}
+
+			      {% if page_object.number == n %}
+
+			      <li class="page-item active">
+			      <a class="page-link" href="?page={{ n }}">{{ n }}<span class="sr-only">(current)</span></a>
+			    	</li>
+
+			    {% elif n > page_object.number|add:-3 and n < page_object.number|add:3 %}
+
+
+			    <li class="page-item">
+			    	<a class="page-link" href="?page={{ n }}"}>{{ n }}</a>
+			    </li>
+			    {% endif %}
+
+			    {% endfor %}
+			    <li class="page-item {% if not next_url %} disabled {% endif %}">
+			      <a class="page-link" href="{{ next_url }}" tabindex="1">></a>
+			    </li>
+		  	</ul>
+			</nav>
+
+
+		</div>
+	</div>
+</div>
+
 
 	{% if user.is_active %}
 	<form action="" method="POST">
