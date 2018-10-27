@@ -40,6 +40,38 @@
       </li>
     </ul>
     
+    <div class="col-auto mr-4" style ="text-align: right; font-size: 0.9em;" >
+    {% if user.is_active %}
+        <form method="post" action="{% url 'account_logout' %}">
+		  {% csrf_token %}
+		  Вы вошли как: <a href="#" style="font-size: 1.2rem;"> {{ user }}</a>
+		<button type="login" class="btn btn-outline-primary" action="submit" >Выйти</button>
+		
+		</form>
+
+      
+        
+
+        {% else %}
+
+        <form class="login" method="POST" action="{% url 'account_login' %}">
+		{% csrf_token %}
+
+
+           {{formlogin}}
+
+			<button type="login" class="btn btn-outline-primary" action="submit" method="post">Войти</button>
+     <a href="/accounts/signup" style="font-size: 1.05em;">Регистрация</a>
+      
+      </form>
+
+      
+      
+         {% endif %}
+
+
+
+  </div>
     <form class="form-inline my-2 my-lg-0" action="{% url 'indexht' %}">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -48,6 +80,26 @@
 </nav>
 </div>
 	{% endblock navbar %}
+
+	{% block auth %}
+
+	<div class="container">
+    
+    <div class="row justify-content-md-center">
+    
+    
+        <div class="col-auto my-4 " style="text-align: center;">
+
+         
+        
+
+
+       
+
+        </div>
+    </div>
+</div>
+	{% endblock auth %}
 
 	{% block content %}
 

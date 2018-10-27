@@ -4,6 +4,8 @@ from blogapp.models import News, Category, Tag, Comments
 from blogapp.forms import CommentsForm
 from django.core.paginator import Paginator
 from django.db.models import Q
+from allauth.account.forms import LoginForm
+from allauth.account.forms import SignupForm
 
 # Create your views here.
 
@@ -41,6 +43,8 @@ class IndexPage(View):
 		paginator = Paginator(news_list,2)
 		page_number = request.GET.get('page', 1)
 		page, prev_url, next_url = news_paginator(paginator, page_number)
+		formlogin = LoginForm()
+		#formsignup = SignupForm()
 
 		
 
@@ -49,6 +53,8 @@ class IndexPage(View):
 				'page_object': page,
 		        'next_url'   : next_url,
 		        'prev_url'   : prev_url,
+		        'formlogin'  : formlogin,
+		        #'formsignup' : formsignup,
 				 
 		}
 

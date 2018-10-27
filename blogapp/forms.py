@@ -8,3 +8,5 @@ class CommentsForm(ModelForm):
 	class Meta:
 		model = Comments
 		fields = ('text',)
+
+
