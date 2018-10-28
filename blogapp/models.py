@@ -60,11 +60,12 @@ class News(models.Model):
 					verbose_name='Теги')
 					
 	text = models.TextField('Текст статьи')
-	text_min = models.TextField('Текст статьи', max_length=300)
+	text_min = models.TextField('Текст мин', max_length=300)
 	date_created = models.DateTimeField('Дата создания', auto_now_add=True)
 	description = models.CharField('Описание', max_length=100)
-	like = models.IntegerField('Лайки')
+	like = models.IntegerField('Лайки', default=0)
 	image = models.ImageField(upload_to=generate_filename, blank=True)
+	moderation = models.BooleanField('модерация', default=False)
 
 
 	

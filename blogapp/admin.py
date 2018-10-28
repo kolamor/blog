@@ -8,6 +8,7 @@ from django_summernote.admin import SummernoteModelAdmin
 
 
 
+
 class SlugAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug': ('title',)}
 	list_display = ('title',) 

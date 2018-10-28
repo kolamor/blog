@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from blogapp.models import News, Category, Tag, Comments
-from blogapp.forms import CommentsForm
+from blogapp.forms import CommentsForm, NewsForm
 from django.core.paginator import Paginator
 from django.db.models import Q
 from allauth.account.forms import LoginForm
 from allauth.account.forms import SignupForm
+from django.contrib.auth import get_user_model
 
 # Create your views here.
 
@@ -44,7 +45,8 @@ class IndexPage(View):
 		page_number = request.GET.get('page', 1)
 		page, prev_url, next_url = news_paginator(paginator, page_number)
 		formlogin = LoginForm()
-		#formsignup = SignupForm()
+		
+		
 
 		
 
@@ -54,8 +56,7 @@ class IndexPage(View):
 		        'next_url'   : next_url,
 		        'prev_url'   : prev_url,
 		        'formlogin'  : formlogin,
-		        #'formsignup' : formsignup,
-				 
+		        
 		}
 
 		return render(request,'index.html', context)
@@ -97,6 +98,60 @@ class NewsView(View):
 			form.save()
 
 		return redirect('news_view', slug )
+
+
+class ProfileUser(View):
+	'''личная страничка'''
+
+
+	def get(self, request, user):
+
+		User = get_user_model()
+
+		us = User.objects.get(username=user)
+		user_news = News.objects.filter(user=us)
+
+		paginator = Paginator(user_news, 2)
+		page_number = request.GET.get('page', 1)
+		page, prev_url, next_url = news_paginator(paginator, page_number)
+		context={
+				'user_news' : user_news,
+				'page_object': page,
+		        'next_url'   : next_url,
+		        'prev_url'   : prev_url,
+		}
+
+		return render(request, 'profile_user.html', context)
+
+
+class InputNews(View):
+
+	def get(self, request):
+
+		form = NewsForm()
+		news_full = len(News.objects.all())
+		context ={
+				'form' : form,
+				'news_full': news_full,
+		}
+
+
+		return render(request, 'input_news.html', context)
+
+	def post(self, request):
+
+		form = NewsForm(request.POST)
+		if form.is_valid():
+			form = form.save(commit=False)
+			form.user = request.user
+			news_full = len(News.objects.all())
+			form.news_id = news_full
+
+			form.save()
+
+		return redirect('indexht', )
+		
+
 		
 
 

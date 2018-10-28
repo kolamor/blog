@@ -76,7 +76,7 @@ news
 	<form action="" method="POST">
 		{% csrf_token %}
 		{{form.as_p }}
-		<button type="submit">отправить</button>
+		<button type="save">отправить</button>
 	</form>
 	{% else %}
 		<h4>Коментировать могут только зарегистрированный пользоватили</h4>
