@@ -1,0 +1,47 @@
+{% extends "index.html"%}
+{% load static %}
+aassd
+{{ user }}
+</br>
+
+{% block profile %}
+
+	<div class="container">
+		<div class="row w-100">
+			<div class="col-12">
+				
+				<a href="{% url 'input_news'%}">add</a>
+				<h4>Ваши статьи:</h4>			
+				
+				<table class="table table-striped">
+					  <thead>
+						<tr>
+						<th scope="col">#</th>
+						  
+						  <th scope="col">Заголовок</th>
+						  <th scope="col">Категория</th>
+						  <th scope="col">Категория</th>
+						 
+						</tr>
+					  </thead>
+					 
+					  <tbody>
+						{% for user_new in user_news%}
+						<tr>
+						  <th scope="row">{{user_new.id}}</th>
+						  
+						  <td> <a href="{{user_new.get_absolute_url}}">{{user_new}}</td>
+						  <td>{{user_new.moderation}}</td>
+						  	<td>{{user_new.date_created}}</td>
+						  
+						</tr>
+						{% endfor%}
+
+						
+					  </tbody>
+				</table>
+		
+			</div>
+		</div>
+	</div>
+{% endblock profile %}

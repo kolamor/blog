@@ -7,7 +7,9 @@ from django.db.models import Q
 from allauth.account.forms import LoginForm
 from allauth.account.forms import SignupForm
 from django.contrib.auth import get_user_model
-
+from django.utils.text import slugify
+from unidecode import unidecode 
+ 
 # Create your views here.
 
 
@@ -39,7 +41,7 @@ class IndexPage(View):
 			news_list = News.objects.filter(Q(title__icontains=search_query) |
 											Q(text__icontains=search_query))
 		else:
-			news_list = News.objects.all()
+			news_list = News.objects.filter(moderation=True)
 		
 		paginator = Paginator(news_list,2)
 		page_number = request.GET.get('page', 1)
@@ -128,11 +130,10 @@ class InputNews(View):
 
 	def get(self, request):
 
-		form = NewsForm()
-		news_full = len(News.objects.all())
+		form = NewsForm(request.POST, request.FILES)
 		context ={
 				'form' : form,
-				'news_full': news_full,
+				
 		}
 
 
@@ -140,13 +141,11 @@ class InputNews(View):
 
 	def post(self, request):
 
-		form = NewsForm(request.POST)
+		form = NewsForm(request.POST, request.FILES)
 		if form.is_valid():
 			form = form.save(commit=False)
 			form.user = request.user
-			news_full = len(News.objects.all())
-			form.news_id = news_full
-
+			form.slug = slugify(unidecode(form.title)) #translate slug from title Unicode
 			form.save()
 
 		return redirect('indexht', )

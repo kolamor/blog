@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+{% block content%}
+<div class="container">
+	<div class="row">
+		<div class="col-8">
+			{{news_full}}
+<h3>Добавтьте статью</h3>
+<form action="" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	Заголовок {{form.title}}</br>
+	{{form.slug}}
+	Категория {{form.category}}
+	Теги {{form.tags}}</br>
+	Текст статьи {{form.text|safe}}</br>
+	минимальный текст{{form.text_min|safe}}</br>
+	Описание {{form.description}}</br>
+	Загрузить картинку {{form.image}}</br>
+
+	
+		
+		
+		<button type="submit">отправить</button>
+	
+</form>
+		</div>
+	</div>
+</div>
+{% endblock content %}
